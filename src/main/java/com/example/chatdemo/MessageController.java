@@ -65,11 +65,13 @@ public class MessageController {
             String userDestination = "/pm/" + message.getRoom() + "/" + message.getTo();
             switch (message.getType()) {
                 case JOIN:
+                    String newNickname = roomService.addUser(room.getName(), new User(message.getFrom()));
+                    message.setFrom(newNickname);
+
                     //associate room and username to ws session so I broadcast one last message when ws disconnected
                     headerAccessor.getSessionAttributes().put("username", message.getFrom());
                     headerAccessor.getSessionAttributes().put("room", message.getRoom());
 
-                    roomService.addUser(room.getName(), new User(message.getFrom()));
 
                     simpMessagingTemplate.convertAndSend(roomDestination, message);
                     break;

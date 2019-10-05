@@ -36,12 +36,10 @@ public class SimpleRoomService implements RoomService {
     }
 
     @Override
-    public void addUser(String roomName, User user) {
-        //TODO: use optional
-        ChatRoom room = roomRegistry.get(roomName);
-        if (room != null) {
-            room.addUser(user);
-        }
+    public String addUser(String roomName, User user) {
+        return Optional.of(roomRegistry.get(roomName))
+                .map(r -> r.addUser(user))
+                .orElseThrow(() -> new RuntimeException("Fuck, the room is not there!"));
     }
 
     @Override

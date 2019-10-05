@@ -62,6 +62,7 @@ function onError(error) {
 function onMessageBroadcasted(msg) {
     var msgObj =JSON.parse(msg.body);
     if (msgObj.type == 'JOIN') {
+        $('#name').val(msgObj.from);
         showMsg(msgObj.from + ' joined');
     } else if (msgObj.type == 'LEAVE') {
         showMsg(msgObj.from + ' left');
