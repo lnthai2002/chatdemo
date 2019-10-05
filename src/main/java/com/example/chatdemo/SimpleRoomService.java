@@ -43,20 +43,20 @@ public class SimpleRoomService implements RoomService {
     }
 
     @Override
-    public void removeUser(String roomName, String username) {
+    public void removeUser(String roomName, String nickname) {
         //TODO: use optional
         ChatRoom room = roomRegistry.get(roomName);
         if (room != null) {
-            room.removeUser(username);
+            room.removeUser(nickname);
         }
     }
 
     /**
      * @return true if room exists and user is present in the room, false otherwise*/
     @Override
-    public boolean isUserAvailable(String roomName, String username) {
+    public boolean isUserAvailable(String roomName, String nickname) {
         return Optional.of(roomRegistry.get(roomName))
-                .map(r -> r.isUserPresent(username))
+                .map(r -> r.isUserPresent(nickname))
                 .orElse(false);
     }
 

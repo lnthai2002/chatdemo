@@ -25,28 +25,28 @@ public class ChatRoom {
     /**
      * This method mutates input*/
     public String addUser(User user) {
-        final String[] nickname = {user.getUsername()};//work around non-final variable use in lambda
+        final String[] nickname = {user.getNickname()};//work around non-final variable use in lambda
         boolean retry = true;
         while(retry) {
-            if (members.stream().anyMatch(m -> m.getUsername().equals(nickname[0]))) {
+            if (members.stream().anyMatch(m -> m.getNickname().equals(nickname[0]))) {
                 nickname[0] = generateNickname();
             }
             else {
-                user.setUsername(nickname[0]);
+                user.setNickname(nickname[0]);
                 members.add(user);
                 retry = false;
             }
         }
-        return user.getUsername();
+        return user.getNickname();
     }
 
     public boolean isUserPresent(String name) {
         return members.stream()
-                .anyMatch(m -> m.getUsername().equals(name));
+                .anyMatch(m -> m.getNickname().equals(name));
     }
 
     public void removeUser(String name) {
-        members.removeIf(m -> m.getUsername().equals(name));
+        members.removeIf(m -> m.getNickname().equals(name));
     }
 
     private String generateNickname() {

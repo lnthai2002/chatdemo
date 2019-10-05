@@ -28,9 +28,9 @@ public class WebSocketEventListener {
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
 
-        String username = (String) headerAccessor.getSessionAttributes().get("username");
+        String nickname = (String) headerAccessor.getSessionAttributes().get("nickname");
         String room = (String) headerAccessor.getSessionAttributes().get("room");
-        Message msg = new Message(username, room, Message.Type.LEAVE);
+        Message msg = new Message(nickname, room, Message.Type.LEAVE);
         String roomDestination = "/broadcast/" + room;
         messagingTemplate.convertAndSend(roomDestination, msg);
     }

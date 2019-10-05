@@ -1,17 +1,17 @@
 package com.example.chatdemo;
 
 public class User {
-    private String username;
+    private String nickname;
 
-    public User(String username) {
-        this.username = username;
+    public User(String nickname) {
+        this.nickname = nickname;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
-    public String getUsername() {
-        return username;
+    public String getNickname() {
+        return nickname;
     }
 }

@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
  * <br/>
  * Server will send back messages to client at one of the 2 endpoints (output destinations)
  * /broadcast/{room} : all users in the room will see the message
- * /pm/{room}/{username} : only designated user in a designated room can see the message
+ * /pm/{room}/{nickname} : only designated user in a designated room can see the message
  * */
 @Controller
 public class MessageController {
@@ -68,8 +68,8 @@ public class MessageController {
                     String newNickname = roomService.addUser(room.getName(), new User(message.getFrom()));
                     message.setFrom(newNickname);
 
-                    //associate room and username to ws session so I broadcast one last message when ws disconnected
-                    headerAccessor.getSessionAttributes().put("username", message.getFrom());
+                    //associate room and nickname to ws session so I broadcast one last message when ws disconnected
+                    headerAccessor.getSessionAttributes().put("nickname", message.getFrom());
                     headerAccessor.getSessionAttributes().put("room", message.getRoom());
 
 
