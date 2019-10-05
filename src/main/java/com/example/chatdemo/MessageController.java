@@ -54,32 +54,42 @@ public class MessageController {
     /***
      * Single input destination handles all messages, messages will be analysed and route to designated room/user
      * JOIN and LEAVE messages are broadcasted to the room only
+     * Message will be dropped if recipient (room/user) is not available
+     * If recipient (room/user) is deleted while message being process we can't do anything about it
      */
     @MessageMapping("/chat")
     public void route(Message message, SimpMessageHeaderAccessor headerAccessor) {
-        String roomDestination = "/broadcast/" + message.getRoom();
-        String userDestination = "/pm/" + message.getRoom() + "/" + message.getTo();
+        ChatRoom room = roomService.getRoom(message.getRoom());
+        if(room != null) {
+            String roomDestination = "/broadcast/" + message.getRoom();
+            String userDestination = "/pm/" + message.getRoom() + "/" + message.getTo();
+            switch (message.getType()) {
+                case JOIN:
+                    //associate room and username to ws session so I broadcast one last message when ws disconnected
+                    headerAccessor.getSessionAttributes().put("username", message.getFrom());
+                    headerAccessor.getSessionAttributes().put("room", message.getRoom());
 
-        switch (message.getType()) {
-            case JOIN:
-                headerAccessor.getSessionAttributes().put("username", message.getFrom());
-                headerAccessor.getSessionAttributes().put("room", message.getRoom());
-                //TODO: is destination valid? room and user not null? do we care if no one is listening?
-                simpMessagingTemplate.convertAndSend(roomDestination, message);
-                break;
-            case LEAVE:
-                //TODO: is destination valid? room and user not null? do we care if no one is listening?
-                simpMessagingTemplate.convertAndSend(roomDestination, message);
-                break;
-            case CHAT:
-                if (message.getTo() == null || message.getTo().isEmpty()) {//public chat
-                    //TODO: is destination valid? room and user not null? do we care if no one is listening?
+                    roomService.addUser(room.getName(), new User(message.getFrom()));
+
                     simpMessagingTemplate.convertAndSend(roomDestination, message);
-                }
-                else {//private chat
-                    //TODO: is destination valid? room and user not null? do we care if no one is listening?
-                    simpMessagingTemplate.convertAndSend(userDestination, message);
-                }
+                    break;
+                case LEAVE:
+                    roomService.removeUser(room.getName(), message.getFrom());
+
+                    simpMessagingTemplate.convertAndSend(roomDestination, message);
+                    break;
+                case CHAT:
+                    if (message.getTo() == null || message.getTo().isEmpty()) {//public chat
+                        simpMessagingTemplate.convertAndSend(roomDestination, message);
+                    }
+                    else {//private chat
+                        if (room.isUserPresent(message.getTo())){
+                            simpMessagingTemplate.convertAndSend(userDestination, message);
+                        }
+                    }
+                    break;
+            }
         }
+        //dont route messages if room doesnt exist
     }
 }
