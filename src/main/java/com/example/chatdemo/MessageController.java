@@ -10,12 +10,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-//TODO: use only 1 endpoint but check "to" to determine if the message should be broadcasted or pm
+//TODO: use only 1 endpoint but check "to" to determine if the message should be broadcast or pm
 /**
  * Messages from client should be delivered to (input destinations):
  * /chat
- *
- * server will send back messages to client at one of the 2 endpoints (output destinations)
+ * <br/>
+ * Server will send back messages to client at one of the 2 endpoints (output destinations)
  * /broadcast/{room} : all users in the room will see the message
  * /pm/{room}/{username} : only designated user in a designated room can see the message
  * */
@@ -53,7 +53,7 @@ public class MessageController {
 
     /***
      * Single input destination handles all messages, messages will be analysed and route to designated room/user
-     * JOIN and LEAVE messages are broadcasted to the room only
+     * JOIN and LEAVE messages are broadcast to the room only
      * Message will be dropped if recipient (room/user) is not available
      * If recipient (room/user) is deleted while message being process we can't do anything about it
      */
