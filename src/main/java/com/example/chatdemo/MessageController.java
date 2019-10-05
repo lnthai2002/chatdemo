@@ -13,8 +13,8 @@ public class MessageController {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    @MessageMapping("/chat/{roomName}")
-    @SendTo("/broadcast/{roomName}")
+    @MessageMapping("/chat/{room}")
+    @SendTo("/broadcast/{room}")
     public Message broadcast(Message message) throws Exception {
         Thread.sleep(1000); // simulated delay
         if (message.getTo() == null || message.getTo().isEmpty()) {
@@ -24,7 +24,7 @@ public class MessageController {
         return null;//TODO: how to not broadcast
     }
 
-    @MessageMapping("/chat/{roomName}/{username}")
+    @MessageMapping("/chat/{room}/{username}")
     @SendTo("/pm/{username}")
     public Message send(Message message) throws Exception {
         Thread.sleep(1000); // simulated delay
