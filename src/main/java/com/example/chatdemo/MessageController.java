@@ -27,6 +27,12 @@ public class MessageController {
     @Autowired
     private RoomService roomService;
 
+    @GetMapping("/")
+    public String getRoot(Model model) {
+        model.addAttribute("rooms", roomService.getAllRoom());
+        return "index";
+    }
+
     @GetMapping("/admin")
     public String getAdmin(Model model) {
         model.addAttribute("rooms", roomService.getAllRoom());

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <title>Hello WebSocket</title>
     <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -18,10 +19,12 @@
         <div class="col-md-6">
             <form class="form-inline">
                 <div class="form-group">
-                    <label for="room">Room number</label>
-                    <input type="text" id="room" class="form-control" placeholder="Room">
+                    <select class="form-control" id="room">
+                        <option value="0">select room</option>
+                        <option th:each="room : ${rooms}" th:value="${room.getName()}" th:text="${room.getName()}"></option>
+                    </select>
                     <label for="name">What is your name?</label>
-                    <input type="text" id="name" class="form-control" placeholder="Your name here...">
+                    <input type="text" id="name" class="form-control" placeholder="Your nickname here...">
                     <div class="connecting">
                         Connecting...
                     </div>
