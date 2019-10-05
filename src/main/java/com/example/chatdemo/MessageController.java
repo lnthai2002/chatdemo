@@ -54,18 +54,29 @@ public class MessageController {
         return "selectRoom";
     }
 
+    /**
+     * Show page to manage rooms
+     * */
     @GetMapping("/admin")
     public String getAdmin(Model model) {
         model.addAttribute("rooms", roomService.getAllRoom());
         return "admin";
     }
 
+    /**
+     * Create a room
+     * Show the admin page again
+     * */
     @PostMapping("/createRoom")
     public ModelAndView createRoom(@ModelAttribute ChatRoom room, BindingResult errors, Model model) {
         roomService.addRoom(room.getName());
         return new ModelAndView("redirect:/admin");//using redirect because this is POST and /admin is GET
     }
 
+    /**
+     * Delete a room
+     * Show the admin page again
+     * */
     @DeleteMapping("/deleteRoom")
     public ModelAndView deleteRoom(@ModelAttribute ChatRoom room, BindingResult errors, Model model) {
         roomService.removeRoom(room.getName());
@@ -73,7 +84,8 @@ public class MessageController {
     }
 
     /***
-     * Single input destination handles all messages, messages will be analysed and route to designated room/user
+     * Single input destination to handle all messages.
+     * Messages will be analyzed and route to designated room/user
      * JOIN and LEAVE messages are broadcast to the room only
      * Message will be dropped if recipient (room/user) is not available
      * If recipient (room/user) is deleted while message being process we can't do anything about it

@@ -1,5 +1,7 @@
 package com.example.chatdemo;
 
+/**
+ * An instance of this class represents a presence of a person under an alias (nickname)*/
 public class User {
     private String nickname;
 
