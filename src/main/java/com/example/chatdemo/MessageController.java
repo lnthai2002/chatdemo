@@ -5,6 +5,10 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 //TODO: use only 1 endpoint but check "to" to determine if the message should be broadcasted or pm
 /**
@@ -19,6 +23,27 @@ import org.springframework.stereotype.Controller;
 public class MessageController {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
+
+    @Autowired
+    private RoomService roomService;
+
+    @GetMapping("/admin")
+    public String getAdmin(Model model) {
+        model.addAttribute("rooms", roomService.getAllRoom());
+        return "admin";
+    }
+
+    @PostMapping("/createRoom")
+    public ModelAndView createRoom(@ModelAttribute ChatRoom room, BindingResult errors, Model model) {
+        roomService.addRoom(room.getName());
+        return new ModelAndView("redirect:/admin");//using redirect because this is POST and /admin is GET
+    }
+
+    @DeleteMapping("/deleteRoom")
+    public ModelAndView deleteRoom(@ModelAttribute ChatRoom room, BindingResult errors, Model model) {
+        roomService.removeRoom(room.getName());
+        return new ModelAndView("redirect:/admin");//using redirect because this is DELETE and /admin is GET
+    }
 
     /***
      * Single input destination handles all messages, messages will be analysed and route to designated room/user
