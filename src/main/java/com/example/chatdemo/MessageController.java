@@ -10,6 +10,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.util.HtmlUtils;
 
 //TODO: use only 1 endpoint but check "to" to determine if the message should be broadcasted or pm
+/**
+ * Messages from client should be delivered to one of the 3 endpoint(input destinations):
+ * /chat/{room} : message target the whole room
+ * /chat/{room}/{username} : message designated to a user in a room
+ * /chat/addUser/{room} : message means to announce a user has join room
+ *
+ * server will send back messages to client at one of the 2 endpoints (output destinations)
+ * /broadcast/{room} : all users in the room will see the message
+ * /pm/{room}/{username} : only designated user in a designated room can see the message
+ * */
 @Controller
 public class MessageController {
     @Autowired
