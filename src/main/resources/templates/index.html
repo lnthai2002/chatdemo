@@ -17,19 +17,8 @@
 <div id="main-content" class="container">
     <div class="row">
         <div class="col-md-12">
-            <form class="form">
-                <div class="form-group">
-                    <select class="form-control" id="room">
-                        <option value="0">select room</option>
-                        <option th:each="room : ${rooms}" th:value="${room.getName()}" th:text="${room.getName()}"></option>
-                    </select>
-                    <label for="name">What is your nickname?</label>
-                    <input type="text" id="name" class="form-control" placeholder="Your nickname here...">
-                    <button id="connect" class="btn btn-default" type="submit">Connect</button>
-                    <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect</button>
-                    <div class="connecting"></div>
-                </div>
-            </form>
+            <input type="hidden" id="room" name="room" th:value="${room}">
+            <input type="hidden" id="name" name="name" th:value="${nickname}">
         </div>
     </div>
     <div class="row">

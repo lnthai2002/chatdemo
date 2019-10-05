@@ -27,10 +27,31 @@ public class MessageController {
     @Autowired
     private RoomService roomService;
 
+    /**
+     * Show page where user select room and pick a nickname*/
     @GetMapping("/")
     public String getRoot(Model model) {
         model.addAttribute("rooms", roomService.getAllRoom());
-        return "index";
+        return "selectRoom";
+    }
+
+    /**
+     * Create a user in the selected room and show the chat page
+     * If the nickname user selected is conflicting with another user, a random nickname will be assigned
+     * If room has been deleted right after user selected, return user to the room selection page*/
+    @PostMapping("/join")
+    public String createUser(@ModelAttribute Participation participation, BindingResult errors, Model model) {
+        ChatRoom room = roomService.getRoom(participation.getRoom());
+        if (room != null) {
+            User user = new User(participation.getNickname());;
+            roomService.addUser(room.getName(), user);
+
+            model.addAttribute(WsSessionAttributes.ROOM, room.getName());
+            model.addAttribute(WsSessionAttributes.NICKNAME, user.getNickname());
+            return "index";
+        }
+        model.addAttribute("rooms", roomService.getAllRoom());
+        return "selectRoom";
     }
 
     @GetMapping("/admin")
@@ -65,9 +86,6 @@ public class MessageController {
             String userDestination = "/pm/" + message.getRoom() + "/" + message.getTo();
             switch (message.getType()) {
                 case JOIN:
-                    String newNickname = roomService.addUser(room.getName(), new User(message.getFrom()));
-                    message.setFrom(newNickname);
-
                     //associate room and nickname to ws session so I broadcast one last message when ws disconnected
                     headerAccessor.getSessionAttributes().put("nickname", message.getFrom());
                     headerAccessor.getSessionAttributes().put("room", message.getRoom());

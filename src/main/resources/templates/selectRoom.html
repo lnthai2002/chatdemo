@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Hello WebSocket</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/main.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+</head>
+<body>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+<div id="main-content" class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <form th:action="@{/join}" th:object="${participation}" method="post">
+                <div class="form-group">
+                    <select class="form-control" id="room" name="room">
+                        <option value="0">select room</option>
+                        <option th:each="room : ${rooms}" th:value="${room.getName()}" th:text="${room.getName()}"></option>
+                    </select>
+                    <input type="text" id="nickname" name="nickname" class="form-control" placeholder="Your nickname here...">
+                    <button id="join" class="btn btn-default" type="submit">Join</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

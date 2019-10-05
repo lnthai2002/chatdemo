@@ -23,8 +23,9 @@ public class ChatRoom {
     }
 
     /**
+     * @return the user that has been added, this user may has changed nickname
      * This method mutates input*/
-    public String addUser(User user) {
+    public User addUser(User user) {
         final String[] nickname = {user.getNickname()};//work around non-final variable use in lambda
         boolean retry = true;
         while(retry) {
@@ -37,7 +38,7 @@ public class ChatRoom {
                 retry = false;
             }
         }
-        return user.getNickname();
+        return user;
     }
 
     public boolean isUserPresent(String name) {

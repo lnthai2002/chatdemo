@@ -62,7 +62,6 @@ function onError(error) {
 function onMessageBroadcasted(msg) {
     var msgObj =JSON.parse(msg.body);
     if (msgObj.type == 'JOIN') {
-        $('#name').val(msgObj.from);
         showMsg(msgObj.from + ' joined');
     } else if (msgObj.type == 'LEAVE') {
         showMsg(msgObj.from + ' left');
@@ -106,7 +105,6 @@ $(function () {
     $("form").on('submit', function (e) {
         e.preventDefault();
     });
-    $( "#connect" ).click(function() { connect(); });
-    $( "#disconnect" ).click(function() { disconnect(); });
     $( "#send" ).click(function() { sendMsg(); });
+    connect();
 });
