@@ -10,10 +10,9 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfig  implements WebSocketMessageBrokerConfigurer {
 
-    /**
-     * declare 2 brokers to deliver msgs to 2 streams*/
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
+        //broker take messages from 2 output destination and deliver to client
         config.enableSimpleBroker("/broadcast", "/pm");
         config.setApplicationDestinationPrefixes("/app");
     }
