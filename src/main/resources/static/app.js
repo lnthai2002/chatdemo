@@ -8,7 +8,7 @@ function connect() {
 
 function onConnected() {
     var room = $('#room').val();
-    var username = $('#name').val();
+    var nickname = $('#name').val();
 
     setConnected(true);
 
@@ -18,7 +18,7 @@ function onConnected() {
     );
 
     stompClient.subscribe(
-        '/pm/' + room + '/' + username ,
+        '/pm/' + room + '/' + nickname ,
         function (msg) {
             var msgObj =JSON.parse(msg.body);
             showPmMsg(msgObj.from + ' says: ' + msgObj.body);
@@ -29,7 +29,7 @@ function onConnected() {
     stompClient.send(
         "/app/chat",
         {},
-        JSON.stringify({from: username, room: room, type: 'JOIN'})
+        JSON.stringify({from: nickname, room: room, type: 'JOIN'})
     )
 }
 
@@ -37,7 +37,7 @@ function setConnected(connected) {
     $("#connect").prop("disabled", connected);
     $("#disconnect").prop("disabled", !connected);
 
-    //lock room and username
+    //lock room and nickname
     $("#room").prop("disabled", connected);
     $("#name").prop("disabled", connected);
 

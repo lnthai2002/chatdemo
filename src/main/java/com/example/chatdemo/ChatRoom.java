@@ -46,7 +46,7 @@ public class ChatRoom {
     }
 
     public void removeUser(String name) {
-        members.removeIf(m->m.getUsername().equals(name));
+        members.removeIf(m -> m.getUsername().equals(name));
     }
 
     private String generateNickname() {
