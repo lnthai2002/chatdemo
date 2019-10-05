@@ -7,7 +7,6 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.util.HtmlUtils;
 
 //TODO: use only 1 endpoint but check "to" to determine if the message should be broadcasted or pm
 /**
@@ -37,7 +36,6 @@ public class MessageController {
                 return message;
             }
         }
-        //simpMessagingTemplate.convertAndSend("/topic/fleet/" + fleetId, new Simple(fleetId, driverId));
         return null;//TODO: how to not broadcast
     }
 
@@ -47,7 +45,6 @@ public class MessageController {
         if (room.equals(message.getRoom()) && username.equals(message.getTo())) {
             return message;
         }
-        //simpMessagingTemplate.convertAndSend("/topic/fleet/" + fleetId, new Simple(fleetId, driverId));
         return null;//TODO: how to not broadcast
     }
 }
