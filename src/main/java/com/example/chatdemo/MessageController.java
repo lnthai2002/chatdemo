@@ -25,7 +25,7 @@ public class MessageController {
     }
 
     @MessageMapping("/chat/{room}/{username}")
-    @SendTo("/pm/{username}")
+    @SendTo("/pm/{room}/{username}")
     public Message send(Message message) throws Exception {
         Thread.sleep(1000); // simulated delay
         if (message.getTo() != null && !message.getTo().isEmpty()) {

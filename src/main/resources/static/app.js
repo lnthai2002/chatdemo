@@ -26,7 +26,7 @@ function connect() {
             var msgObj =JSON.parse(msg.body);
             showMsg(msgObj.from + ' says: ' + msgObj.body);
         });
-        stompClient.subscribe('/pm/' + username , function (msg) {
+        stompClient.subscribe('/pm/' + room + '/' + username , function (msg) {
             var msgObj =JSON.parse(msg.body);
             showPmMsg(msgObj.from + ' says: ' + msgObj.body);
         });
