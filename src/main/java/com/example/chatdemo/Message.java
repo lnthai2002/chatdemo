@@ -1,16 +1,31 @@
 package com.example.chatdemo;
 
 public class Message {
+    public enum Type {
+        JOIN,
+        CHAT,
+        LEAVE;
+    }
+
     private String from;
     private String to;
     private String body;
     private String roomName;
+    private Type type;
+    public Type getType() {
+        return type;
+    }
 
-    public Message(String from, String to, String body, String roomName) {
+    public Message(String from, String to, String body, String roomName, Type type) {
         this.from = from;
         this.to = to;
         this.body = body;
         this.roomName = roomName;
+        this.type = type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
 
