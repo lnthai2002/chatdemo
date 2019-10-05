@@ -77,7 +77,7 @@ function disconnect() {
     console.log("Disconnected");
 }
 
-function sendName() {
+function sendMsg() {
     var room = $("#room").val();
     var to = $('#to').val();
     var msg = {
@@ -109,5 +109,5 @@ $(function () {
     });
     $( "#connect" ).click(function() { connect(); });
     $( "#disconnect" ).click(function() { disconnect(); });
-    $( "#send" ).click(function() { sendName(); });
+    $( "#send" ).click(function() { sendMsg(); });
 });
