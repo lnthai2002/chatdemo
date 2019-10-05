@@ -14,19 +14,19 @@ public class Message {
     }
 
     private String from;
-
     private String to;
     private String body;
     private String room;
     private Type type;
-    public Type getType() {
-        return type;
-    }
 
     public Message(String from, String room, Type type) {
         this.from = from;
         this.room = room;
         this.type = type;
+    }
+
+    public Type getType() {
+        return type;
     }
 
     public void setType(Type type) {

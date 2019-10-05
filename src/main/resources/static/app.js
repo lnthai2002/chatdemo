@@ -27,7 +27,7 @@ function onConnected() {
 
     // announce your presence
     stompClient.send(
-        "/app/chat/" + room,
+        "/app/chat",
         {},
         JSON.stringify({from: username, room: room, type: 'JOIN'})
     )
@@ -94,12 +94,7 @@ function sendMsg() {
         'body': $("#msg").val(),
         'type': 'CHAT'
     };
-    if (to == null || to == '') {
-        stompClient.send("/app/chat/" + room, {}, JSON.stringify(msg));
-    }
-    else {
-        stompClient.send("/app/chat/" + room + '/' + to, {}, JSON.stringify(msg));
-    }
+    stompClient.send("/app/chat", {}, JSON.stringify(msg));
 }
 
 function showMsg(message) {

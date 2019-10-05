@@ -1,19 +1,15 @@
 package com.example.chatdemo;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 //TODO: use only 1 endpoint but check "to" to determine if the message should be broadcasted or pm
 /**
- * Messages from client should be delivered to one of the 3 endpoint(input destinations):
- * /chat/{room} : message target the whole room
- * /chat/{room}/{username} : message designated to a user in a room
- * /chat/addUser/{room} : message means to announce a user has join room
+ * Messages from client should be delivered to (input destinations):
+ * /chat
  *
  * server will send back messages to client at one of the 2 endpoints (output destinations)
  * /broadcast/{room} : all users in the room will see the message
@@ -24,27 +20,35 @@ public class MessageController {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    @MessageMapping("/chat/{room}")
-    @SendTo("/broadcast/{room}")
-    public Message broadcast(@DestinationVariable String room,  Message message, SimpMessageHeaderAccessor headerAccessor) throws Exception {
-        if (room.equals(message.getRoom())) {
-            if (message.getTo() == null || message.getTo().isEmpty()) {
-                if (message.getType() == Message.Type.JOIN) {
-                    headerAccessor.getSessionAttributes().put("username", message.getFrom());
-                    headerAccessor.getSessionAttributes().put("room", message.getRoom());
-                }
-                return message;
-            }
-        }
-        return null;//TODO: how to not broadcast
-    }
+    /***
+     * Single input destination handles all messages, messages will be analysed and route to designated room/user
+     * JOIN and LEAVE messages are broadcasted to the room only
+     */
+    @MessageMapping("/chat")
+    public void route(Message message, SimpMessageHeaderAccessor headerAccessor) {
+        String roomDestination = "/broadcast/" + message.getRoom();
+        String userDestination = "/pm/" + message.getRoom() + "/" + message.getTo();
 
-    @MessageMapping("/chat/{room}/{username}")
-    @SendTo("/pm/{room}/{username}")
-    public Message send(@DestinationVariable String room, @DestinationVariable String username, Message message) throws Exception {
-        if (room.equals(message.getRoom()) && username.equals(message.getTo())) {
-            return message;
+        switch (message.getType()) {
+            case JOIN:
+                headerAccessor.getSessionAttributes().put("username", message.getFrom());
+                headerAccessor.getSessionAttributes().put("room", message.getRoom());
+                //TODO: is destination valid? room and user not null? do we care if no one is listening?
+                simpMessagingTemplate.convertAndSend(roomDestination, message);
+                break;
+            case LEAVE:
+                //TODO: is destination valid? room and user not null? do we care if no one is listening?
+                simpMessagingTemplate.convertAndSend(roomDestination, message);
+                break;
+            case CHAT:
+                if (message.getTo() == null || message.getTo().isEmpty()) {//public chat
+                    //TODO: is destination valid? room and user not null? do we care if no one is listening?
+                    simpMessagingTemplate.convertAndSend(roomDestination, message);
+                }
+                else {//private chat
+                    //TODO: is destination valid? room and user not null? do we care if no one is listening?
+                    simpMessagingTemplate.convertAndSend(userDestination, message);
+                }
         }
-        return null;//TODO: how to not broadcast
     }
 }
