@@ -10,17 +10,17 @@ public class Message {
     private String from;
     private String to;
     private String body;
-    private String roomName;
+    private String room;
     private Type type;
     public Type getType() {
         return type;
     }
 
-    public Message(String from, String to, String body, String roomName, Type type) {
+    public Message(String from, String to, String body, String room, Type type) {
         this.from = from;
         this.to = to;
         this.body = body;
-        this.roomName = roomName;
+        this.room = room;
         this.type = type;
     }
 
@@ -29,12 +29,12 @@ public class Message {
     }
 
 
-    public String getRoomName() {
-        return roomName;
+    public String getRoom() {
+        return room;
     }
 
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
+    public void setRoom(String room) {
+        this.room = room;
     }
 
     public String getFrom() {

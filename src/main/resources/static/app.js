@@ -45,7 +45,7 @@ function sendName() {
     var room = $("#room").val();
     var to = $('#to').val();
     var msg = {
-        'roomName': room,
+        'room': room,
         'from': $("#name").val(),
         'to': to,
         'body': $("#msg").val()
