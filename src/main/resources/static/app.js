@@ -34,10 +34,6 @@ function onConnected() {
 }
 
 function setConnected(connected) {
-    var connectingElement = $(".connecting");
-    connectingElement.text('Connected');
-    connectingElement.css('color', 'green');
-
     $("#connect").prop("disabled", connected);
     $("#disconnect").prop("disabled", !connected);
 
