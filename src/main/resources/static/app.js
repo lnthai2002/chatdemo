@@ -34,6 +34,10 @@ function onConnected() {
 }
 
 function setConnected(connected) {
+    var connectingElement = $(".connecting");
+    connectingElement.text('Connected');
+    connectingElement.css('color', 'green');
+
     $("#connect").prop("disabled", connected);
     $("#disconnect").prop("disabled", !connected);
 
@@ -54,6 +58,9 @@ function setConnected(connected) {
 }
 
 function onError(error) {
+    var connectingElement = document.querySelector('.connecting');
+    connectingElement.textContent = 'Could not connect to WebSocket server. Please refresh this page to try again!';
+    connectingElement.style.color = 'red';
 }
 
 function onMessageBroadcasted(msg) {
