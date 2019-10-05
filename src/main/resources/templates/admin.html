@@ -9,8 +9,8 @@
 
 </div>
 
-<form th:action="@{/deleteRoom}" th:object="${room}" method="delete">
-    <select class="form-control" id="roomName">
+<form th:action="@{/deleteRoom}" th:object="${room}" th:method="delete">
+    <select class="form-control" id="name" name="name">
         <option value="0">select room</option>
         <option th:each="room : ${rooms}" th:value="${room.getName()}" th:text="${room.getName()}"></option>
     </select>
