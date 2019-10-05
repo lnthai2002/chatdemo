@@ -1,5 +1,11 @@
 package com.example.chatdemo;
 
+/**
+ * from is required
+ * room is required
+ * type is required
+ * missing "to" implies the message is for everyone
+ * */
 public class Message {
     public enum Type {
         JOIN,
@@ -8,6 +14,7 @@ public class Message {
     }
 
     private String from;
+
     private String to;
     private String body;
     private String room;
@@ -16,10 +23,8 @@ public class Message {
         return type;
     }
 
-    public Message(String from, String to, String body, String room, Type type) {
+    public Message(String from, String room, Type type) {
         this.from = from;
-        this.to = to;
-        this.body = body;
         this.room = room;
         this.type = type;
     }
