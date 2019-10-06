@@ -43,8 +43,7 @@ public class MessageController {
     public String createUser(@ModelAttribute Participation participation, BindingResult errors, Model model) {
         ChatRoom room = roomService.getRoom(participation.getRoom());
         if (room != null) {
-            User user = new User(participation.getNickname());;
-            roomService.addUser(room.getName(), user);
+            User user = roomService.addUser(room.getName(), new User(participation.getNickname()));
 
             model.addAttribute(WsSessionAttributes.ROOM, room.getName());
             model.addAttribute(WsSessionAttributes.NICKNAME, user.getNickname());

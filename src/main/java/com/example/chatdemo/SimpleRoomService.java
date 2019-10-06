@@ -36,8 +36,8 @@ public class SimpleRoomService implements RoomService {
     }
 
     @Override
-    public void addUser(String roomName, User user) {
-        Optional.of(roomRegistry.get(roomName))
+    public User addUser(String roomName, User user) {
+        return Optional.of(roomRegistry.get(roomName))
                 .map(r -> r.addUser(user))
                 .orElseThrow(() -> new RuntimeException("Fuck, the room is not there!"));
     }
