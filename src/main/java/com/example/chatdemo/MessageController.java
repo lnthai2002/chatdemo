@@ -113,8 +113,8 @@ public class MessageController {
                     if (message.getTo() == null || message.getTo().isEmpty()) {//public chat
                         simpMessagingTemplate.convertAndSend(roomDestination, message);
                     }
-                    else {//private chat
-                        if (room.isUserPresent(message.getTo())){
+                    else {//private chat, only route if both user are in the same room
+                        if (room.isUserPresent(message.getTo()) && room.isUserPresent(message.getFrom())){
                             simpMessagingTemplate.convertAndSend(userDestination, message);
                         }
                     }
